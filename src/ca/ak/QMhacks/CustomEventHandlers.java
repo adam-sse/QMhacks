@@ -28,7 +28,7 @@ public class CustomEventHandlers {
         
         @Override
         protected void handle(AdaptationEvent event) {
-            LOGGER.info(LOGGING_PREFIX + "Got AdaptationEvent:\n\t" + event);
+            LOGGER.info(LOGGING_PREFIX + "Got AdaptationEvent: " + event.getClass().getSimpleName());
         }
         
     }
