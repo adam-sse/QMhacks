@@ -45,7 +45,12 @@ public class LoadLocalModel {
         
         RepositoryConnector.initialize();
         
-        test();
+        //test();
+        christian();
+    }
+    
+    private static void christian() {
+        ConfigurationExtraktion.INSTANCE.begin();
     }
     
     private static void test() {
