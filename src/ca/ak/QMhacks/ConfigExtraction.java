@@ -9,16 +9,13 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import eu.qualimaster.adaptation.AdaptationManager;
 import eu.qualimaster.coordination.RepositoryConnector;
 import eu.qualimaster.coordination.RepositoryConnector.Models;
 import eu.qualimaster.coordination.RepositoryConnector.Phase;
 import eu.qualimaster.easy.extension.internal.PipelineHelper;
 import eu.qualimaster.monitoring.MonitoringManager;
-import net.ssehub.easy.basics.progress.ProgressObserver;
 import net.ssehub.easy.instantiation.core.model.common.VilException;
 import net.ssehub.easy.instantiation.rt.core.model.rtVil.Executor;
-import net.ssehub.easy.reasoning.core.frontend.ReasonerFrontend;
 import net.ssehub.easy.varModel.confModel.Configuration;
 import net.ssehub.easy.varModel.confModel.IDecisionVariable;
 import net.ssehub.easy.varModel.model.values.ReferenceValue;
@@ -171,8 +168,9 @@ public class ConfigExtraction implements Runnable {
         while (true) {
             synchronized (this) {
                 if (stop) {
-                    LOGGER.info(LOGGING_PREFIX + "ConfigExtraction stopped");
+                    stop = false;
                     isRunning = false;
+                    LOGGER.info(LOGGING_PREFIX + "ConfigExtraction stopped");
                     break;
                 }
             }
