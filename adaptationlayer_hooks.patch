@@ -1,0 +1,29 @@
+diff --git a/AdaptationLayer/src/eu/qualimaster/adaptation/platform/Main.java b/AdaptationLayer/src/eu/qualimaster/adaptation/platform/Main.java
+index 14321a1..93b72dc 100644
+--- a/AdaptationLayer/src/eu/qualimaster/adaptation/platform/Main.java
++++ b/AdaptationLayer/src/eu/qualimaster/adaptation/platform/Main.java
+@@ -77,12 +77,24 @@ public class Main extends ToolBase implements IShutdownListener {
+         AdaptationManager.setShutdownListener(this);
+         AdaptationManager.start();
+         LOGGER.info("QualiMaster infrastructure is up and running ... terminate by Ctrl-C");
++        
++        try {
++            Class.forName("ca.ak.QMhacks.StartupHook");
++        } catch (Exception e) {
++            LOGGER.error("Can't load ca.ak.QMhacks.StartupHook", e);
++        }
+     }
+     
+     /**
+      * Shuts down the platform.
+      */
+     private void shutdownPlatform() {
++        try {
++            Class.forName("ca.ak.QMhacks.ShutdownHook");
++        } catch (Exception e) {
++            LOGGER.error("Can't load ca.ak.QMhacks.ShutdownHook", e);
++        }
++
+         LOGGER.info("Stopping adaptation manager ...");
+         AdaptationManager.stop();
+         LOGGER.info("Stopping monitoring manager ...");
