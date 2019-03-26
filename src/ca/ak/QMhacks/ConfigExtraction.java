@@ -169,6 +169,7 @@ public class ConfigExtraction implements Runnable {
             synchronized (this) {
                 if (stop) {
                     LOGGER.info(LOGGING_PREFIX + "ConfigExtraction stopped");
+                    isRunning = false;
                     break;
                 }
             }
