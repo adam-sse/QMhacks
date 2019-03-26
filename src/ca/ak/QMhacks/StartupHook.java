@@ -31,6 +31,11 @@ public class StartupHook {
         // this block is executed when the infrastructure is up
         
         LOGGER.info(LOGGING_PREFIX + "StartupHook called");
+        
+        if (!ConfigurationExtraktion.isRunning) {
+            Thread th = new Thread(new ConfigurationExtraktion());
+            th.start();
+        }
     }
     
 }
