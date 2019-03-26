@@ -18,6 +18,7 @@ import net.ssehub.easy.instantiation.core.model.common.VilException;
 import net.ssehub.easy.instantiation.rt.core.model.rtVil.Executor;
 import net.ssehub.easy.varModel.confModel.Configuration;
 import net.ssehub.easy.varModel.confModel.IDecisionVariable;
+import net.ssehub.easy.varModel.model.ModelQueryException;
 import net.ssehub.easy.varModel.model.values.ReferenceValue;
 import net.ssehub.easy.varModel.model.values.ValueDoesNotMatchTypeException;
 
@@ -74,7 +75,22 @@ public class ConfigExtraction implements Runnable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-      
+        
+        // Change Algorithm Experiment
+        try {
+            IDecisionVariable node = configuration.getDecision("PipelineVar_2_FamilyElement0", true);
+            IDecisionVariable algoSet = node.getNestedElement("available");
+            IDecisionVariable algo = algoSet.getNestedElement(1);
+            System.err.println(algo.getValue());
+            System.err.println(node.getNestedElement("actual").getValue());
+            node.getNestedElement("actual").getValue().setValue(algo);
+        } catch (ModelQueryException | ValueDoesNotMatchTypeException | NullPointerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        // End of Change Algorithm Experiment
+        
         adapModel.endUsing();
         
         LOGGER.error(LOGGING_PREFIX + "#####################################################");
