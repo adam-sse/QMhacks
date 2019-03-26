@@ -9,6 +9,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import eu.qualimaster.adaptation.events.AdaptationEvent;
+import eu.qualimaster.coordination.commands.CoordinationCommand;
 import eu.qualimaster.events.EventHandler;
 import eu.qualimaster.events.EventManager;
 import eu.qualimaster.infrastructure.PipelineLifecycleEvent;
@@ -22,7 +23,7 @@ public class CustomEventHandlers {
     
     private static class CustomAdaptationEventHandler extends EventHandler<AdaptationEvent> {
         
-        protected CustomAdaptationEventHandler() {
+        public CustomAdaptationEventHandler() {
             super(AdaptationEvent.class);
         }
         
@@ -33,11 +34,24 @@ public class CustomEventHandlers {
         
     }
     
+    private static class CustomCoordinationCommandHandler extends EventHandler<CoordinationCommand> {
+        
+        public CustomCoordinationCommandHandler() {
+            super(CoordinationCommand.class);
+        }
+
+        @Override
+        protected void handle(CoordinationCommand event) {
+            LOGGER.info(LOGGING_PREFIX + "Got CoordinationCommand: " + event.getClass().getSimpleName());
+        }
+        
+    }
+    
     private static class CustomPipelineLifecycleEventHandler extends EventHandler<PipelineLifecycleEvent> {
         
         private Map<String, PipelineLifecycleEvent.Status> pipelines;
         
-        protected CustomPipelineLifecycleEventHandler() {
+        public CustomPipelineLifecycleEventHandler() {
             super(PipelineLifecycleEvent.class);
             
             this.pipelines = new HashMap<>();
@@ -111,6 +125,7 @@ public class CustomEventHandlers {
         LOGGER.info(LOGGING_PREFIX + "Registering custom EventHandlers...");
         
         EventManager.register(new CustomAdaptationEventHandler());
+        EventManager.register(new CustomCoordinationCommandHandler());
         EventManager.register(new CustomPipelineLifecycleEventHandler());
     }
 
