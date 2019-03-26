@@ -5,8 +5,8 @@ import org.apache.log4j.Logger;
 
 /**
  * <p>
- * This class is loaded via <code>Class.forName()</code> when <code>eu.qualimaster.adaptation.platform.Main</code>
- * started up the pipeline.
+ * This class is loaded via <code>Class.forName()</code> after <code>eu.qualimaster.adaptation.platform.Main</code>
+ * started up the infrastructure.
  * </p>
  * <p>
  * Note that this requires manually modifying the AdapationLayer, as upstream does not provide a hook infrastructure.
@@ -29,13 +29,9 @@ public class StartupHook {
     
     static {
         // this block is executed when the infrastructure is up
-        
         LOGGER.info(LOGGING_PREFIX + "StartupHook called");
         
-        if (!ConfigurationExtraktion.isRunning) {
-            Thread th = new Thread(new ConfigurationExtraktion());
-            th.start();
-        }
+        CustomEventHandlers.initialize();
     }
     
 }

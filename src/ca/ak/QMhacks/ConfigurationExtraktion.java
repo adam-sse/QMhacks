@@ -1,5 +1,7 @@
 package ca.ak.QMhacks;
 
+import static ca.ak.QMhacks.StartupHook.LOGGING_PREFIX;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,7 +35,7 @@ public class ConfigurationExtraktion implements Runnable {
 //            e1.printStackTrace();
 //        }
 //        
-        LOGGER.error("CA: Received Configuration!");
+        LOGGER.error(LOGGING_PREFIX + "Received Configuration!");
         
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/Configuration_Log.txt", true));
@@ -87,7 +89,7 @@ public class ConfigurationExtraktion implements Runnable {
             if (!visitedNodes.contains(destination)) {
                 visitedNodes.add(destination);
                 // Print infos
-                LOGGER.error("CA: Node: " + destination.getQualifiedName());
+                LOGGER.error(LOGGING_PREFIX + "Node: " + destination.getQualifiedName());
                 printNestedElement(destination, "executors");
                 printNestedElement(destination, "parallelism");
                 printNestedElement(destination, "throughputVolume");
@@ -105,7 +107,7 @@ public class ConfigurationExtraktion implements Runnable {
     }
     
     private void printNestedElement(IDecisionVariable pip, String nestedElement) {
-        LOGGER.error("CA: " + nestedElement + ": " + pip.getNestedElement(nestedElement).getValue());
+        LOGGER.error(LOGGING_PREFIX + nestedElement + ": " + pip.getNestedElement(nestedElement).getValue());
     }
     
     private IDecisionVariable nestedElement2IDecisionVariable(IDecisionVariable nestedElement, Configuration configuration) {
