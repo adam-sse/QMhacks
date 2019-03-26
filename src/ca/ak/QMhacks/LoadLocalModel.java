@@ -20,6 +20,9 @@ import net.ssehub.easy.varModel.model.ModelQueryException;
 import net.ssehub.easy.varModel.model.values.ReferenceValue;
 import net.ssehub.easy.varModel.model.values.Value;
 
+/**
+ * A simple program that loads a local QM pipeline model for manual inspection with Java code. 
+ */
 public class LoadLocalModel {
 
     @SuppressWarnings("unused")
