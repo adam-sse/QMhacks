@@ -31,8 +31,13 @@ public class LoadLocalModel {
         configureLogging.setAccessible(true);
         configureLogging.invoke(null);
         
+        if (args.length != 1) {
+            System.err.println("Pass the path to the local model as the only argument");
+            System.exit(1);
+        }
+        
         Properties props = new Properties();
-        props.setProperty("repository.confModel.local", "E:/tmp/qm_fun/pipelines/infrastructure_model");
+        props.setProperty("repository.confModel.local", args[0]);
         CoordinationConfiguration.configure(props);
         
         RepositoryConnector.initialize();
