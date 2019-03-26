@@ -9,10 +9,16 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import eu.qualimaster.adaptation.AdaptationManager;
 import eu.qualimaster.coordination.RepositoryConnector;
 import eu.qualimaster.coordination.RepositoryConnector.Models;
 import eu.qualimaster.coordination.RepositoryConnector.Phase;
 import eu.qualimaster.easy.extension.internal.PipelineHelper;
+import eu.qualimaster.monitoring.MonitoringManager;
+import net.ssehub.easy.basics.progress.ProgressObserver;
+import net.ssehub.easy.instantiation.core.model.common.VilException;
+import net.ssehub.easy.instantiation.rt.core.model.rtVil.Executor;
+import net.ssehub.easy.reasoning.core.frontend.ReasonerFrontend;
 import net.ssehub.easy.varModel.confModel.Configuration;
 import net.ssehub.easy.varModel.confModel.IDecisionVariable;
 import net.ssehub.easy.varModel.model.values.ReferenceValue;
@@ -32,30 +38,13 @@ public class ConfigExtraction implements Runnable {
     }
     
     public void extractData() {
+        LOGGER.error(LOGGING_PREFIX + "#####################################################");
         Models monModel = RepositoryConnector.getModels(Phase.MONITORING);
         monModel.startUsing();
         Configuration configuration = monModel.getConfiguration();
 
-//        Configuration config2 = RepositoryConnector.getModels(Phase.ADAPTATION).getConfiguration();
-//        IDecisionVariable pip = PipelineHelper.obtainPipelineByName(config2, "SwitchPip");
-//        try {
-//            pip.getNestedElement("hosts").getValue().setValue(new Integer(2));
-//        } catch (ValueDoesNotMatchTypeException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        }
-//        
-        
-//        try {
-//            BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/Configuration_Log.txt", true));
-//            printConfigInfo(configuration, "SwitchPip", writer);
-//            writer.append("\n\n\n ########################################################################### \n\n\n");
-//            writer.close();
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
         try {
+            LOGGER.error(LOGGING_PREFIX + "MONITORING!!!!");
             printConfigInfo(configuration, "SwitchPip");
         } catch (ValueDoesNotMatchTypeException e) {
             // TODO Auto-generated catch block
@@ -66,19 +55,33 @@ public class ConfigExtraction implements Runnable {
         }
         monModel.endUsing();
         
+        LOGGER.error(LOGGING_PREFIX + "=====================================================");
         Models adapModel = RepositoryConnector.getModels(Phase.ADAPTATION);
         adapModel.startUsing();
-        
-        Configuration config2 = adapModel.getConfiguration();
-        IDecisionVariable pip = PipelineHelper.obtainPipelineByName(config2, "SwitchPip");
+        configuration = adapModel.getConfiguration();
+        Executor exec = RepositoryConnector.createExecutor(adapModel.getAdaptationScript(), RepositoryConnector.createTmpFolder(), configuration, null, MonitoringManager.getSystemState().freeze());
+        exec.stopAfterBindValues();
         try {
-            pip.getNestedElement("hosts").getValue().setValue(new Integer(2));
-        } catch (Exception e) {
+            exec.execute();
+        } catch (VilException e) { // be extremely careful
+            LOGGER.error(LOGGING_PREFIX + "During value binding: " + e.getMessage(), e);
+        }
+        
+        try {
+            LOGGER.error(LOGGING_PREFIX + "ADAPTATION!!!!");
+            printConfigInfo(configuration, "SwitchPip");
+        } catch (ValueDoesNotMatchTypeException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+      
         adapModel.endUsing();
-//      
+        
+        LOGGER.error(LOGGING_PREFIX + "#####################################################");
+      
         
     }
     
