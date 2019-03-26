@@ -21,8 +21,16 @@ import net.ssehub.easy.varModel.model.values.ValueDoesNotMatchTypeException;
 
 public class ConfigurationExtraktion implements Runnable {
 
+    public static final ConfigurationExtraktion INSTANCE = new ConfigurationExtraktion();
+    
     private static final Logger LOGGER = LogManager.getLogger(ConfigurationExtraktion.class);
-    public static boolean isRunning = false;
+
+    private boolean isRunning = false;
+    
+    private boolean stop = false;
+    
+    private ConfigurationExtraktion() {
+    }
     
     public void extractData() {
         Configuration configuration = RepositoryConnector.getModels(Phase.MONITORING).getConfiguration();
@@ -114,14 +122,37 @@ public class ConfigurationExtraktion implements Runnable {
         return configuration.getDecision(((ReferenceValue)nestedElement.getValue()).getValue());
     }
 
+    public synchronized void begin() {
+        if (!isRunning) {
+            Thread th = new Thread(this);
+            th.start();
+            isRunning = true;
+            LOGGER.info(LOGGING_PREFIX + "ConfigurationExtraktion started");
+        }
+    }
+    
+    public synchronized void end() {
+        if (isRunning) {
+            stop = true;
+            LOGGER.info(LOGGING_PREFIX + "ConfigurationExtraktion stopping...");
+        }
+    }
+    
     @Override
     public void run() {
-        isRunning = true;
-        long timestamp = System.currentTimeMillis();
         while (true) {
-            if (System.currentTimeMillis() - timestamp > 10000) {
-                timestamp = System.currentTimeMillis();
-                extractData();
+            synchronized (this) {
+                if (stop) {
+                    LOGGER.info(LOGGING_PREFIX + "ConfigurationExtraktion stopped");
+                    break;
+                }
+            }
+            
+            extractData();
+            
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
             }
         }
     }
