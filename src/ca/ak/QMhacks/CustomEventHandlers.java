@@ -28,7 +28,7 @@ public class CustomEventHandlers {
         
         @Override
         protected void handle(AdaptationEvent event) {
-            
+            LOGGER.info(LOGGING_PREFIX + "Got AdaptationEvent:\n\t" + event);
         }
         
     }
@@ -45,7 +45,7 @@ public class CustomEventHandlers {
         
         @Override
         protected void handle(PipelineLifecycleEvent event) {
-            String name = event.getMainPipeline();
+            String name = event.getPipeline();
             if (name != null) {
                 pipelines.put(name, event.getStatus());
                 
