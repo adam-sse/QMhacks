@@ -9,7 +9,16 @@ import org.apache.log4j.Logger;
  * started up the pipeline.
  * </p>
  * <p>
- * (Note that this requires manually modifying the AdapationLayer, as upstream does not provide a hook infrastructure.)
+ * Note that this requires manually modifying the AdapationLayer, as upstream does not provide a hook infrastructure.
+ * Do something like:
+ * <code><pre>
+ *   try {
+ *       Class.forName("ca.ak.QMhacks.StartupHook");
+ *   } catch (Exception e) {
+ *       LOGGER.error("Can't load ca.ak.QMhacks.StartupHook", e);
+ *   }
+ * </pre></code>
+ * in the appropriate place in AdaptionLayer.
  * </p>
  */
 public class StartupHook {
