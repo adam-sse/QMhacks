@@ -32,6 +32,8 @@ public class StartupHook {
         LOGGER.info(LOGGING_PREFIX + "StartupHook called");
         
         CustomEventHandlers.initialize();
+        
+        LOGGER.info(LOGGING_PREFIX + "StartupHook done");
     }
     
 }

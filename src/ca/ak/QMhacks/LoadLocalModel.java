@@ -50,9 +50,10 @@ public class LoadLocalModel {
     }
     
     private static void christian() {
-        ConfigurationExtraktion.INSTANCE.begin();
+        ConfigExtraction.INSTANCE.begin();
     }
     
+    @SuppressWarnings("unused")
     private static void test() {
         System.out.println("######################################################");
         Models models = RepositoryConnector.getModels(Phase.ADAPTATION);

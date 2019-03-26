@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
  * </pre></code>
  * in the appropriate place in AdaptionLayer.
  * </p>
+ * 
+ * TODO: this doesn't seem to work currently... (use events instead?)
  */
 public class ShutdownHook {
     
@@ -29,8 +31,11 @@ public class ShutdownHook {
     
     static {
         // this block is executed when the infrastructure is shutting down
-        
         LOGGER.info(LOGGING_PREFIX + "ShutdownHook called");
+        
+        // ...
+        
+        LOGGER.info(LOGGING_PREFIX + "ShutdownHook done");
     }
     
 }

@@ -73,7 +73,7 @@ public class CustomEventHandlers {
              */
             
             case CHECKING:
-                ConfigurationExtraktion.INSTANCE.begin();
+                ConfigExtraction.INSTANCE.begin();
                 break;
                 
             case CHECKED:
@@ -103,7 +103,7 @@ public class CustomEventHandlers {
                 break;
                 
             case STOPPED:
-                ConfigurationExtraktion.INSTANCE.end();
+                ConfigExtraction.INSTANCE.end();
                 break;
                 
             /*

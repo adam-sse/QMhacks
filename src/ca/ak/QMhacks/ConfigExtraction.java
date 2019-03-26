@@ -18,17 +18,17 @@ import net.ssehub.easy.varModel.confModel.IDecisionVariable;
 import net.ssehub.easy.varModel.model.values.ReferenceValue;
 import net.ssehub.easy.varModel.model.values.ValueDoesNotMatchTypeException;
 
-public class ConfigurationExtraktion implements Runnable {
+public class ConfigExtraction implements Runnable {
 
-    public static final ConfigurationExtraktion INSTANCE = new ConfigurationExtraktion();
+    public static final ConfigExtraction INSTANCE = new ConfigExtraction();
     
-    private static final Logger LOGGER = LogManager.getLogger(ConfigurationExtraktion.class);
+    private static final Logger LOGGER = LogManager.getLogger(ConfigExtraction.class);
 
     private boolean isRunning = false;
     
     private boolean stop = false;
     
-    private ConfigurationExtraktion() {
+    private ConfigExtraction() {
     }
     
     public void extractData() {
@@ -152,14 +152,14 @@ public class ConfigurationExtraktion implements Runnable {
             Thread th = new Thread(this);
             th.start();
             isRunning = true;
-            LOGGER.info(LOGGING_PREFIX + "ConfigurationExtraktion started");
+            LOGGER.info(LOGGING_PREFIX + "ConfigExtraction started");
         }
     }
     
     public synchronized void end() {
         if (isRunning) {
             stop = true;
-            LOGGER.info(LOGGING_PREFIX + "ConfigurationExtraktion stopping...");
+            LOGGER.info(LOGGING_PREFIX + "ConfigExtraction stopping...");
         }
     }
     
@@ -168,7 +168,7 @@ public class ConfigurationExtraktion implements Runnable {
         while (true) {
             synchronized (this) {
                 if (stop) {
-                    LOGGER.info(LOGGING_PREFIX + "ConfigurationExtraktion stopped");
+                    LOGGER.info(LOGGING_PREFIX + "ConfigExtraction stopped");
                     break;
                 }
             }
